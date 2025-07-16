@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { InfoModal } from '../info-modal/info-modal';
+import { LocalStorageService } from '../../services/local-storage.service';
 
 interface Story {
   text: string;
@@ -35,6 +36,7 @@ interface Story {
 })
 export class TodaysTale implements OnInit, OnDestroy {
   selectedGuild = 'Moonshadow Acorns';
+  penName = '';
   userStoryInput = '';
   wordCount = 0;
   isSubmitted = false;
@@ -48,10 +50,13 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
+    // Load saved values from localStorage
+    this.loadStoredValues();
     // Monitor online/offline status
     this.setupNetworkListener();
     this.loadTodaysStory();
@@ -73,6 +78,13 @@ export class TodaysTale implements OnInit, OnDestroy {
     });
   }
 
+  private loadStoredValues(): void {
+    this.selectedGuild = this.localStorageService.getGuild();
+    this.penName = this.localStorageService.getPenName();
+    this.userStoryInput = this.localStorageService.getTodaysSubmission();
+    this.onTextChange(); // Update word count
+  }
+
   private loadTodaysStory(): void {
     // In a real app, this would load from an API
     // For now, use a sample story
@@ -80,6 +92,15 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   onTextChange(): void {
     this.wordCount = this.userStoryInput.trim().split(/\s+/).filter(word => word.length > 0).length;
+    this.localStorageService.setTodaysSubmission(this.userStoryInput);
+  }
+
+  onGuildChange(): void {
+    this.localStorageService.setGuild(this.selectedGuild);
+  }
+
+  onPenNameChange(): void {
+    this.localStorageService.setPenName(this.penName);
   }
 
   canSubmit(): boolean {
