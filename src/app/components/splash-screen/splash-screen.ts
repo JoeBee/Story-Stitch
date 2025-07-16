@@ -16,12 +16,12 @@ export class SplashScreen implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    // Show splash screen for 3 seconds then navigate to main page
+    // Show splash screen for 5 seconds then navigate to main page
     setTimeout(() => {
       this.isLoading = true;
       setTimeout(() => {
         this.router.navigate(['/todays-tale']);
       }, 1000); // Allow fade out animation to complete
-    }, 2000);
+    }, 4000);
   }
 }
