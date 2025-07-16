@@ -1,0 +1,105 @@
+<div class="great-book-page">
+    <!-- Banner -->
+    <div class="banner">
+        <div class="banner-content">
+            <h2 class="banner-title">Story Stitch, Weaving Worlds and Connecting Minds</h2>
+            <div class="banner-actions">
+                <button mat-icon-button class="nav-button" (click)="goToToday()" matTooltip="Today's Tale">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button class="info-button" (click)="openInfoModal()" matTooltip="App Information">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline Banner -->
+    <div class="offline-banner" *ngIf="!isOnline">
+        <mat-icon>wifi_off</mat-icon>
+        You are offline. Please check your internet connection.
+    </div>
+
+    <div class="container-fluid great-book-container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="page-title">The Great Book of Tales</h1>
+
+                <!-- Story Navigation -->
+                <div class="story-navigation" *ngIf="stories.length > 0">
+                    <button mat-fab color="primary" [disabled]="currentStoryIndex === 0" (click)="previousStory()"
+                        class="nav-button prev-button" aria-label="Previous Story">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+
+                    <div class="story-info">
+                        <span class="story-counter">
+                            Story {{currentStoryIndex + 1}} of {{stories.length}}
+                        </span>
+                        <div class="story-date">{{getCurrentStoryDate()}}</div>
+                    </div>
+
+                    <button mat-fab color="primary" [disabled]="currentStoryIndex === stories.length - 1"
+                        (click)="nextStory()" class="nav-button next-button" aria-label="Next Story">
+                        <mat-icon>arrow_forward</mat-icon>
+                    </button>
+                </div>
+
+                <!-- Story Display -->
+                <div class="story-content" *ngIf="currentStory">
+                    <div class="story-header">
+                        <h2 class="story-title">{{currentStory.title}}</h2>
+                        <div class="story-meta">
+                            <span class="guild-badge" [class]="getGuildClass(currentStory.guild)">
+                                {{currentStory.guild}}
+                            </span>
+                            <span class="story-date-detail">{{currentStory.date | date:'fullDate'}}</span>
+                        </div>
+                    </div>
+
+                    <div class="story-body">
+                        <img [src]="currentStory.image" alt="Story illustration" class="story-image"
+                            *ngIf="currentStory.image">
+
+                        <div class="story-text" [innerHTML]="currentStory.fullText"></div>
+
+                        <div class="story-contributors"
+                            *ngIf="currentStory.contributors && currentStory.contributors.length > 0">
+                            <h4>Contributors:</h4>
+                            <div class="contributors-list">
+                                <span class="contributor" *ngFor="let contributor of currentStory.contributors">
+                                    {{contributor}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Story Actions -->
+                    <div class="story-actions">
+                        <button mat-raised-button color="accent" (click)="shareStory()" [disabled]="!isOnline">
+                            <mat-icon>share</mat-icon>
+                            Share This Story
+                        </button>
+
+                        <button mat-raised-button (click)="goToToday()" class="today-button">
+                            <mat-icon>today</mat-icon>
+                            Today's Tale
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Empty State -->
+                <div class="empty-state" *ngIf="stories.length === 0">
+                    <mat-icon class="empty-icon">auto_stories</mat-icon>
+                    <h3>No Stories Yet</h3>
+                    <p>The Great Book of Tales is waiting for its first story. Start today's tale to begin the
+                        collection!</p>
+                    <button mat-raised-button color="primary" (click)="goToToday()">
+                        <mat-icon>edit</mat-icon>
+                        Start Writing
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

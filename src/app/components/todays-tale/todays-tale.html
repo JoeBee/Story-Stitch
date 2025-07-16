@@ -1,0 +1,88 @@
+<div class="todays-tale-page">
+    <!-- Banner -->
+    <div class="banner">
+        <div class="banner-content">
+            <h2 class="banner-title">Story Stitch, Weaving Worlds and Connecting Minds</h2>
+            <div class="banner-actions">
+                <button mat-icon-button class="nav-button" (click)="goToGreatBook()" matTooltip="View Story Archive">
+                    <mat-icon>auto_stories</mat-icon>
+                </button>
+                <button mat-icon-button class="info-button" (click)="openInfoModal()" matTooltip="App Information">
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline Banner -->
+    <div class="offline-banner" *ngIf="!isOnline">
+        <mat-icon>wifi_off</mat-icon>
+        You are offline. Please check your internet connection.
+    </div>
+
+    <div class="container-fluid todays-tale-container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="page-title">Today's Tale</h1>
+
+                <!-- Guild Selection -->
+                <div class="guild-dropdown">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Select Your Guild</mat-label>
+                        <mat-select [(value)]="selectedGuild">
+                            <mat-option value="Moonshadow Acorns">Moonshadow Acorns</mat-option>
+                            <mat-option value="Stormwing Collective">Stormwing Collective</mat-option>
+                            <mat-option value="Wispwood Whisperers">Wispwood Whisperers</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Story Display Section -->
+                <div class="story-display" *ngIf="currentStory">
+                    <img [src]="currentStory.image" alt="Story illustration" class="story-image"
+                        *ngIf="currentStory.image">
+                    <div class="story-text" [innerHTML]="currentStory.text"></div>
+                </div>
+
+                <!-- Story Input Section -->
+                <div class="story-input-section">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Add your paragraph to today's story (50 words max)</mat-label>
+                        <textarea matInput rows="6" [(ngModel)]="userStoryInput" [readonly]="isSubmitted"
+                            (input)="onTextChange()" class="story-input" placeholder="Continue the story...">
+            </textarea>
+                    </mat-form-field>
+
+                    <div class="word-counter" [class.warning]="wordCount > 50">
+                        {{wordCount}}/50 words
+                    </div>
+                </div>
+
+                <!-- Submit Section -->
+                <div class="submit-section">
+                    <button mat-raised-button color="primary" [disabled]="!canSubmit() || !isOnline"
+                        (click)="submitStory()" class="submit-btn">
+                        <mat-icon>send</mat-icon>
+                        Submit Story
+                    </button>
+                </div>
+
+                <!-- Social Media Sharing -->
+                <div class="social-sharing" *ngIf="isSubmitted">
+                    <h3>Share Your Story</h3>
+                    <div class="social-buttons">
+                        <button mat-fab color="primary" (click)="shareOnFacebook()" aria-label="Share on Facebook">
+                            <mat-icon>public</mat-icon>
+                        </button>
+                        <button mat-fab color="accent" (click)="shareOnTwitter()" aria-label="Share on Twitter">
+                            <mat-icon>send</mat-icon>
+                        </button>
+                        <button mat-fab (click)="shareNative()" aria-label="Share">
+                            <mat-icon>share</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

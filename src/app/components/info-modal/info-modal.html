@@ -1,0 +1,109 @@
+<div class="info-modal">
+    <div class="modal-header">
+        <h2 mat-dialog-title>
+            <mat-icon>help_outline</mat-icon>
+            Story Stitch Information
+        </h2>
+        <button mat-icon-button mat-dialog-close class="close-button">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div mat-dialog-content class="modal-content">
+
+        <!-- App Description -->
+        <div class="section">
+            <h3>About Story Stitch</h3>
+            <p>
+                Story Stitch is a collaborative storytelling platform where creativity knows no bounds.
+                Join one of our magical guilds and help weave tales that span realms, dimensions, and dreams.
+            </p>
+        </div>
+
+        <!-- Standard Sayings -->
+        <div class="section">
+            <h3>Guild Wisdom & Standard Sayings</h3>
+            <div class="sayings-grid">
+                <div class="saying-card moonshadow">
+                    <h4>Moonshadow Acorns</h4>
+                    <p>"In shadow and silver light, stories bloom eternal."</p>
+                    <p>"Every acorn holds the dream of a mighty oak."</p>
+                </div>
+
+                <div class="saying-card stormwing">
+                    <h4>Stormwing Collective</h4>
+                    <p>"Through tempest and thunder, our tales take flight."</p>
+                    <p>"The sky is not the limit, but the beginning."</p>
+                </div>
+
+                <div class="saying-card wispwood">
+                    <h4>Wispwood Whisperers</h4>
+                    <p>"In whispered woods, the ancients still speak."</p>
+                    <p>"Listen closely, for every tree has a tale to tell."</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- App Guidelines -->
+        <div class="section">
+            <h3>How to Participate</h3>
+            <ul>
+                <li><strong>Choose Your Guild:</strong> Select the guild that speaks to your creative spirit</li>
+                <li><strong>Read Today's Tale:</strong> Immerse yourself in the current story</li>
+                <li><strong>Contribute Wisely:</strong> Add your paragraph (50 words maximum)</li>
+                <li><strong>Share & Celebrate:</strong> Share completed stories with the world</li>
+                <li><strong>Explore the Archive:</strong> Discover previous collaborative masterpieces</li>
+            </ul>
+        </div>
+
+        <!-- Trademark and Legal Information -->
+        <div class="section legal">
+            <h3>Legal & Trademark Information</h3>
+            <div class="legal-content">
+                <p><strong>Story Stitch™</strong> is a trademark of Story Stitch Inc.</p>
+                <p><strong>© 2024 Story Stitch Inc.</strong> All rights reserved.</p>
+
+                <div class="trademark-details">
+                    <p><strong>Trademark Notice:</strong> "Story Stitch," "Weaving Worlds and Connecting Minds," and all
+                        guild names are trademarks or registered trademarks of Story Stitch Inc.</p>
+
+                    <p><strong>Content Policy:</strong> By contributing to stories, you grant Story Stitch Inc.
+                        non-exclusive rights to display, share, and promote your contributions as part of the
+                        collaborative storytelling experience.</p>
+
+                    <p><strong>Community Guidelines:</strong> All content must be family-friendly, respectful, and
+                        contribute positively to the collaborative storytelling experience.</p>
+                </div>
+
+                <div class="powered-by">
+                    <p><strong>Powered by:</strong></p>
+                    <ul>
+                        <li>Angular Framework</li>
+                        <li>Google Firebase</li>
+                        <li>Google AI</li>
+                        <li>Material Design</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="section">
+            <h3>Connect With Us</h3>
+            <p>Questions, suggestions, or want to collaborate? Reach out to our guild masters!</p>
+            <div class="contact-info">
+                <p><mat-icon>email</mat-icon> support&#64;storystitch.com</p>
+                <p><mat-icon>language</mat-icon> www.storystitch.com</p>
+                <p><mat-icon>privacy_tip</mat-icon> <a href="#" (click)="openPrivacyPolicy()">Privacy Policy</a></p>
+            </div>
+        </div>
+
+    </div>
+
+    <div mat-dialog-actions class="modal-actions">
+        <button mat-raised-button color="primary" mat-dialog-close>
+            <mat-icon>check</mat-icon>
+            Got It!
+        </button>
+    </div>
+</div>

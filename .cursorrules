@@ -1,0 +1,146 @@
+# Story Stitch PWA - Cursor Rules
+
+## Project Overview
+Story Stitch is a Progressive Web App (PWA) built with Angular, TypeScript, Bootstrap, and Angular Material Design components. The app enables collaborative storytelling through guild-based story creation and sharing.
+
+## Technology Stack
+- **Framework**: Angular 20+ with standalone components
+- **Language**: TypeScript
+- **Styling**: SCSS, Bootstrap, Angular Material Design
+- **PWA**: Service Worker, Push Notifications, Offline Support
+- **Font**: Comic Sans MS (default throughout the app)
+- **Build**: Angular CLI with PWA support
+
+## Architecture Rules
+
+### Component Structure
+- All components MUST be standalone
+- Separate files for HTML, SCSS, and TypeScript
+- Components organized in their own folders under `src/app/components/`
+- Services organized under `src/app/services/`
+
+### File Naming Conventions
+- Components: `component-name.ts`, `component-name.html`, `component-name.scss`
+- Services: `service-name.service.ts`
+- Interfaces: `interface-name.interface.ts`
+- Use kebab-case for all file names
+
+### Code Style Guidelines
+- Use TypeScript strict mode
+- Implement OnInit, OnDestroy lifecycle hooks where appropriate
+- Use reactive patterns with RxJS Observables
+- Implement proper error handling and offline detection
+- Use Angular Material Design components for all UI elements
+- Maintain responsive design for mobile and desktop
+
+### PWA Requirements
+- Implement offline functionality with proper error messages
+- Use Service Worker for caching and push notifications
+- Handle network status changes gracefully
+- Provide appropriate fallbacks for offline scenarios
+
+### Styling Rules
+- Default font: Comic Sans MS for all elements
+- Use Bootstrap for layout and initial styling
+- Angular Material Design for UI components
+- Responsive design with mobile-first approach
+- Consistent color scheme with CSS custom properties
+
+### Environment Configuration
+- Store all API keys and sensitive data in environment files
+- Use separate environment files for development and production
+- Never commit sensitive information to version control
+
+### Firebase Integration
+- Project ID: story-stitch-39581
+- Use Firebase for hosting and data storage
+- Implement proper error handling for Firebase operations
+
+### Google Services
+- Google AI API integration for story generation
+- Google Analytics for user tracking
+- Implement proper consent management
+
+### PWA Features
+- Push notifications for daily story reminders (8:30 AM)
+- Social media sharing capabilities
+- Offline mode with appropriate messaging
+- App installability with proper manifest configuration
+
+### Testing Guidelines
+- Write unit tests for all services and components
+- Test PWA functionality including offline scenarios
+- Test responsive design across different screen sizes
+- Validate push notification functionality
+
+### Performance Optimization
+- Lazy load components where appropriate
+- Optimize images and assets
+- Minimize bundle size
+- Implement proper caching strategies
+
+### Accessibility
+- Ensure WCAG 2.1 AA compliance
+- Proper ARIA labels for interactive elements
+- Keyboard navigation support
+- Screen reader compatibility
+
+### Security Considerations
+- Sanitize user input for story content
+- Implement proper CSP headers
+- Secure API communication
+- Validate all client-side data on the server
+
+### Guild System
+- Three guilds: Moonshadow Acorns, Stormwing Collective, Wispwood Whisperers
+- Each guild has distinct styling and theming
+- Guild selection affects story participation and display
+
+### Story Features
+- 50-word limit for user contributions
+- Real-time word counting with visual feedback
+- Read-only mode after submission
+- Social sharing functionality
+- Story navigation with previous/next capabilities
+
+### Error Handling
+- Network connectivity detection and appropriate messaging
+- Graceful degradation for offline scenarios
+- User-friendly error messages
+- Proper logging for debugging
+
+### Development Workflow
+- Use Angular CLI for generation and building
+- Follow Angular style guide conventions
+- Implement proper Git workflow with meaningful commits
+- Regular testing on multiple devices and browsers
+
+## Component Guidelines
+
+### Splash Screen
+- Full-screen background image
+- Fade-in/fade-out animations
+- Automatic navigation to main page
+- Loading spinner with branding
+
+### Today's Tale
+- Guild selection dropdown
+- Story display with image
+- Textarea with word count validation
+- Submit functionality with state management
+- Social sharing integration
+
+### Great Book of Tales
+- Story navigation with arrow controls
+- Full story display with metadata
+- Guild-specific styling
+- Share functionality
+- Empty state handling
+
+### Banner Component
+- Consistent across pages 2 and 3
+- Info modal trigger
+- Responsive design
+- Sticky positioning
+
+Remember to maintain consistency across all components and follow the established patterns for the best user experience. 

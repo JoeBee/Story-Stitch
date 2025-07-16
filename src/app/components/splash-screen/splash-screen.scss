@@ -1,0 +1,91 @@
+.splash-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 1s ease-in;
+}
+
+.splash-container.fade-out {
+    animation: fadeOut 1s ease-out forwards;
+}
+
+.splash-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.7);
+    z-index: -1;
+}
+
+.splash-content {
+    text-align: center;
+    color: white;
+    z-index: 1;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.logo-container {
+    margin-bottom: 30px;
+}
+
+.app-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+
+.app-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #f8f9fa;
+    font-family: 'Comic Sans MS', cursive, sans-serif !important;
+}
+
+.loading-spinner {
+    margin-top: 20px;
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+    .app-title {
+        font-size: 2.5rem;
+    }
+
+    .app-subtitle {
+        font-size: 1rem;
+    }
+
+    .splash-content {
+        padding: 20px;
+        margin: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-title {
+        font-size: 2rem;
+    }
+
+    .app-subtitle {
+        font-size: 0.9rem;
+    }
+}
