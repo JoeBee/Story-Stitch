@@ -31,7 +31,8 @@
                         <div class="guild-dropdown">
                             <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Select Your Guild</mat-label>
-                                <mat-select [(value)]="selectedGuild" (selectionChange)="onGuildChange()">
+                                <mat-select [disabled]="true" [(value)]="selectedGuild"
+                                    (selectionChange)="onGuildChange()">
                                     <mat-option value="Moonshadow Acorns">Moonshadow Acorns</mat-option>
                                     <mat-option value="Stormwing Collective">Stormwing Collective</mat-option>
                                     <mat-option value="Wispwood Whisperers">Wispwood Whisperers</mat-option>
@@ -55,9 +56,13 @@
                 </div>
 
                 <!-- Story Display Section -->
+                <!-- *** currentStory.title: {{currentStory.title}}
+                *** currentStory.text: {{currentStory.text}}
+                *** currentStory.images: {{currentStory.images}} -->
                 <div class="story-display" *ngIf="currentStory">
-                    <img [src]="currentStory.image" alt="Story illustration" class="story-image"
-                        *ngIf="currentStory.image">
+                    <img [src]="currentStory.images[0]" alt="Story illustration" class="story-image"
+                        *ngIf="currentStory.images && currentStory.images.length > 0">
+                    <div style="font-weight: bolder;" class="story-title" [innerHTML]="currentStory.title"></div>
                     <div class="story-text" [innerHTML]="currentStory.text"></div>
                 </div>
 

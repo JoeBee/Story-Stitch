@@ -14,11 +14,8 @@ import { Subscription } from 'rxjs';
 import { InfoModal } from '../info-modal/info-modal';
 import { LocalStorageService } from '../../services/local-storage.service';
 import { PenNameGeneratorService } from '../../services/pen-name-generator.service';
-
-interface Story {
-  text: string;
-  image?: string;
-}
+import { FirestoreService } from '../../services/firestore.service';
+import { DisplayStory, StoryData } from '../../interfaces/story.interface';
 
 @Component({
   selector: 'app-todays-tale',
@@ -45,18 +42,21 @@ export class TodaysTale implements OnInit, OnDestroy {
   isSubmitted = false;
   isOnline = navigator.onLine;
   clearPenName = false;
-  currentStory: Story = {
-    text: 'Once upon a time in a realm where magic flowed like rivers and dreams took flight on silver wings...',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+  currentStory: DisplayStory = {
+    title: 'Loading...',
+    text: 'Please wait while we load today\'s story...',
+    images: []
   };
 
   private onlineSubscription?: Subscription;
+  private storySubscription?: Subscription;
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private localStorageService: LocalStorageService,
-    private penNameGeneratorService: PenNameGeneratorService
+    private penNameGeneratorService: PenNameGeneratorService,
+    private firestoreService: FirestoreService
   ) { }
 
   ngOnInit(): void {
@@ -70,6 +70,9 @@ export class TodaysTale implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.onlineSubscription) {
       this.onlineSubscription.unsubscribe();
+    }
+    if (this.storySubscription) {
+      this.storySubscription.unsubscribe();
     }
   }
 
@@ -98,8 +101,35 @@ export class TodaysTale implements OnInit, OnDestroy {
   }
 
   private loadTodaysStory(): void {
-    // In a real app, this would load from an API
-    // For now, use a sample story
+    console.log('🚀 Starting to load today\'s story...');
+    this.storySubscription = this.firestoreService.getTodaysStory().subscribe({
+      next: (storyData: StoryData | null) => {
+        console.log('📨 Received story data:', storyData);
+        if (storyData) {
+          this.currentStory = {
+            title: storyData.title || '',
+            text: storyData.intro || '',
+            images: storyData.images || []
+          };
+        } else {
+          // Fallback if no story found for today
+          this.currentStory = {
+            title: 'No Story Available',
+            text: 'There is no story available for today. Please check back later.',
+            images: []
+          };
+          console.log('⚠️ No story data found, showing fallback message');
+        }
+      },
+      error: (error) => {
+        console.error('💥 Error loading today\'s story:', error);
+        this.currentStory = {
+          title: 'Error Loading Story',
+          text: 'Unable to load today\'s story. Please check your connection and try again.',
+          images: []
+        };
+      }
+    });
   }
 
   onTextChange(): void {
