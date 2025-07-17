@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { InfoModal } from '../info-modal/info-modal';
@@ -30,7 +31,8 @@ interface Story {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatCheckboxModule
   ],
   templateUrl: './todays-tale.html',
   styleUrls: ['./todays-tale.scss']
@@ -42,6 +44,7 @@ export class TodaysTale implements OnInit, OnDestroy {
   wordCount = 0;
   isSubmitted = false;
   isOnline = navigator.onLine;
+  clearPenName = false;
   currentStory: Story = {
     text: 'Once upon a time in a realm where magic flowed like rivers and dreams took flight on silver wings...',
     image: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
@@ -110,6 +113,16 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   onPenNameChange(): void {
     this.localStorageService.setPenName(this.penName);
+  }
+
+  onClearPenNameChange(): void {
+    if (this.clearPenName) {
+      this.penName = '';
+      this.localStorageService.setPenName(this.penName);
+    } else if (this.penName.trim() === '') {
+      this.penName = this.penNameGeneratorService.generateRandomPenName();
+      this.localStorageService.setPenName(this.penName);
+    }
   }
 
   canSubmit(): boolean {

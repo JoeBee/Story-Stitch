@@ -40,13 +40,17 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="pen-name-input">
+                        <div>
                             <mat-form-field appearance="fill" class="w-100">
                                 <mat-label>Your Pen Name (optional)</mat-label>
                                 <input matInput [(ngModel)]="penName" (ngModelChange)="onPenNameChange()"
                                     placeholder="Enter your writing pseudonym..." maxlength="50">
                             </mat-form-field>
                         </div>
+                        <mat-checkbox [(ngModel)]="clearPenName" (ngModelChange)="onClearPenNameChange()"
+                            class="clear-pen-name-checkbox">
+                            Anonymous Author
+                        </mat-checkbox>
                     </div>
                 </div>
 
@@ -97,5 +101,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>

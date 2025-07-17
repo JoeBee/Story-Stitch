@@ -1,4 +1,4 @@
-ng // Todays Tale component styles
+// Todays Tale component styles
 
 .todays-tale-page {
     min-height: 100vh;
@@ -65,7 +65,7 @@ ng // Todays Tale component styles
     padding: 30px 20px;
     max-width: 800px;
     margin: 0 auto;
-    background: white;
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
     margin-top: 20px;
     margin-bottom: 20px;
@@ -245,4 +245,15 @@ ng // Todays Tale component styles
 
 .w-100 {
     width: 100%;
+}
+
+.clear-pen-name-checkbox {
+    background: rgba(255, 255, 255, 0.5);
+    padding-left: 10px;
+    padding-right: 15px;
+    // background-color: purple;
+    margin-top: -10px !important;
+    margin-bottom: 10px !important;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
