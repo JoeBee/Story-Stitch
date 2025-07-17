@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { InfoModal } from '../info-modal/info-modal';
 import { LocalStorageService } from '../../services/local-storage.service';
+import { PenNameGeneratorService } from '../../services/pen-name-generator.service';
 
 interface Story {
   text: string;
@@ -51,7 +52,8 @@ export class TodaysTale implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private penNameGeneratorService: PenNameGeneratorService
   ) { }
 
   ngOnInit(): void {
@@ -81,6 +83,13 @@ export class TodaysTale implements OnInit, OnDestroy {
   private loadStoredValues(): void {
     this.selectedGuild = this.localStorageService.getGuild();
     this.penName = this.localStorageService.getPenName();
+
+    // Generate a pen name if none exists
+    if (!this.penName || this.penName.trim() === '') {
+      this.penName = this.penNameGeneratorService.generateRandomPenName();
+      this.localStorageService.setPenName(this.penName);
+    }
+
     this.userStoryInput = this.localStorageService.getTodaysSubmission();
     this.onTextChange(); // Update word count
   }

@@ -25,25 +25,29 @@
             <div class="col-12">
                 <h1 class="page-title">Today's Tale</h1>
 
-                <!-- Guild Selection -->
-                <div class="guild-dropdown">
-                    <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Select Your Guild</mat-label>
-                        <mat-select [(value)]="selectedGuild" (selectionChange)="onGuildChange()">
-                            <mat-option value="Moonshadow Acorns">Moonshadow Acorns</mat-option>
-                            <mat-option value="Stormwing Collective">Stormwing Collective</mat-option>
-                            <mat-option value="Wispwood Whisperers">Wispwood Whisperers</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-
-                <!-- Pen Name -->
-                <div class="pen-name-input">
-                    <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Your Pen Name (optional)</mat-label>
-                        <input matInput [(ngModel)]="penName" (ngModelChange)="onPenNameChange()"
-                            placeholder="Enter your writing pseudonym..." maxlength="50">
-                    </mat-form-field>
+                <!-- Guild Selection and Pen Name -->
+                <div class="row">
+                    <div class="col-6">
+                        <div class="guild-dropdown">
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Select Your Guild</mat-label>
+                                <mat-select [(value)]="selectedGuild" (selectionChange)="onGuildChange()">
+                                    <mat-option value="Moonshadow Acorns">Moonshadow Acorns</mat-option>
+                                    <mat-option value="Stormwing Collective">Stormwing Collective</mat-option>
+                                    <mat-option value="Wispwood Whisperers">Wispwood Whisperers</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="pen-name-input">
+                            <mat-form-field appearance="fill" class="w-100">
+                                <mat-label>Your Pen Name (optional)</mat-label>
+                                <input matInput [(ngModel)]="penName" (ngModelChange)="onPenNameChange()"
+                                    placeholder="Enter your writing pseudonym..." maxlength="50">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Story Display Section -->
