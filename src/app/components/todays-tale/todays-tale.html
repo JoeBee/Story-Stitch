@@ -53,21 +53,44 @@
                             Anonymous Author
                         </mat-checkbox>
                     </div>
+                </div> <!-- Story Display Section -->
+
+                <!-- Loading Spinner -->
+                <div class="loading-container" *ngIf="isLoading" [class.fade-out]="isFadingOut">
+                    <div class="fairy-spinner">
+                        <div class="fairy">✨🧚‍♀️✨</div>
+                        <div class="wand">🪄</div>
+                        <div class="sparkles">
+                            <span class="sparkle">✨</span>
+                            <span class="sparkle">⭐</span>
+                            <span class="sparkle">✨</span>
+                            <span class="sparkle">🌟</span>
+                            <span class="sparkle">✨</span>
+                        </div>
+                    </div>
+                    <div class="loading-text">
+                        <h3>The Story Fairy is weaving today's tale...</h3>
+                        <p>Sprinkling magical words just for you! ✨</p>
+                    </div>
                 </div>
 
-                <!-- Story Display Section -->
-                <!-- *** currentStory.title: {{currentStory.title}}
-                *** currentStory.text: {{currentStory.text}}
-                *** currentStory.images: {{currentStory.images}} -->
-                <div class="story-display" *ngIf="currentStory">
+                <div class="story-display" *ngIf="currentStory && !isLoading">
                     <img [src]="currentStory.images[0]" alt="Story illustration" class="story-image"
                         *ngIf="currentStory.images && currentStory.images.length > 0">
-                    <div style="font-weight: bolder;" class="story-title" [innerHTML]="currentStory.title"></div>
+                    <div class="story-title-container">
+                        <div style="font-weight: bolder;" class="story-title" [innerHTML]="currentStory.title"></div>
+                        <button mat-icon-button class="speech-button" (click)="speakStory()"
+                            [disabled]="!isSpeechSupported" matTooltip="Listen to the story">
+                            <mat-icon>{{isSpeaking ? 'volume_up' : 'mic'}}</mat-icon>
+                        </button>
+                    </div>
+                    <b>Intro:</b>
                     <div class="story-text" [innerHTML]="currentStory.text"></div>
                 </div>
 
-                <!-- Story Input Section -->
-                <div class="story-input-section">
+
+                <h4 *ngIf="!isLoading">Your Story Contribution:</h4>
+                <div class="story-input-section" *ngIf="!isLoading">
                     <mat-form-field appearance="fill" class="w-100">
                         <mat-label>Add your paragraph to today's story (50 words max)</mat-label>
                         <textarea matInput rows="6" [(ngModel)]="userStoryInput" [readonly]="isSubmitted"
@@ -81,7 +104,7 @@
                 </div>
 
                 <!-- Submit Section -->
-                <div class="submit-section">
+                <div class="submit-section" *ngIf="!isLoading">
                     <button mat-raised-button color="primary" [disabled]="!canSubmit() || !isOnline"
                         (click)="submitStory()" class="submit-btn">
                         <mat-icon>send</mat-icon>

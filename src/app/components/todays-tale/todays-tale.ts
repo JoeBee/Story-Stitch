@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -42,6 +42,10 @@ export class TodaysTale implements OnInit, OnDestroy {
   isSubmitted = false;
   isOnline = navigator.onLine;
   clearPenName = false;
+  isSpeechSupported = false;
+  isSpeaking = false;
+  isLoading = true;
+  isFadingOut = false;
   currentStory: DisplayStory = {
     title: 'Loading...',
     text: 'Please wait while we load today\'s story...',
@@ -50,13 +54,15 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   private onlineSubscription?: Subscription;
   private storySubscription?: Subscription;
+  private speechSynthesis?: SpeechSynthesis;
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private localStorageService: LocalStorageService,
     private penNameGeneratorService: PenNameGeneratorService,
-    private firestoreService: FirestoreService
+    private firestoreService: FirestoreService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +71,8 @@ export class TodaysTale implements OnInit, OnDestroy {
     // Monitor online/offline status
     this.setupNetworkListener();
     this.loadTodaysStory();
+    // Initialize speech synthesis
+    this.initializeSpeechSynthesis();
   }
 
   ngOnDestroy(): void {
@@ -102,15 +110,35 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   private loadTodaysStory(): void {
     console.log('🚀 Starting to load today\'s story...');
+    this.isLoading = true;
+    this.isFadingOut = false;
+    this.cdr.detectChanges(); // Trigger change detection
+
+    // Safety timeout to prevent infinite loading
+    const safetyTimeout = setTimeout(() => {
+      if (this.isLoading && !this.isFadingOut) {
+        console.log('⏰ Safety timeout triggered - forcing fade out');
+        this.currentStory = {
+          title: 'Story Loading...',
+          text: 'Please wait a moment while we fetch today\'s magical tale...',
+          images: []
+        };
+        this.startFadeOut();
+      }
+    }, 10000); // 10 second timeout
+
     this.storySubscription = this.firestoreService.getTodaysStory().subscribe({
       next: (storyData: StoryData | null) => {
+        clearTimeout(safetyTimeout);
         console.log('📨 Received story data:', storyData);
+
         if (storyData) {
           this.currentStory = {
             title: storyData.title || '',
             text: storyData.intro || '',
             images: storyData.images || []
           };
+          console.log('✅ Story loaded successfully:', this.currentStory.title);
         } else {
           // Fallback if no story found for today
           this.currentStory = {
@@ -120,16 +148,37 @@ export class TodaysTale implements OnInit, OnDestroy {
           };
           console.log('⚠️ No story data found, showing fallback message');
         }
+
+        // Start fade-out animation
+        this.startFadeOut();
       },
       error: (error) => {
+        clearTimeout(safetyTimeout);
         console.error('💥 Error loading today\'s story:', error);
         this.currentStory = {
           title: 'Error Loading Story',
           text: 'Unable to load today\'s story. Please check your connection and try again.',
           images: []
         };
+
+        // Start fade-out animation even on error
+        this.startFadeOut();
       }
     });
+  }
+
+  private startFadeOut(): void {
+    console.log('🎭 Starting fade-out animation...');
+    this.isFadingOut = true;
+    this.cdr.detectChanges(); // Trigger change detection for fade-out
+
+    // Wait for fade animation to complete before hiding loading spinner
+    setTimeout(() => {
+      console.log('✨ Fade-out complete, hiding spinner');
+      this.isLoading = false;
+      this.isFadingOut = false;
+      this.cdr.detectChanges(); // Trigger change detection for final state
+    }, 800); // 800ms to match CSS animation duration
   }
 
   onTextChange(): void {
@@ -220,5 +269,149 @@ export class TodaysTale implements OnInit, OnDestroy {
       // Show success message
       console.log('Link copied to clipboard!');
     });
+  }
+
+  private initializeSpeechSynthesis(): void {
+    if ('speechSynthesis' in window) {
+      this.speechSynthesis = window.speechSynthesis;
+      this.isSpeechSupported = true;
+
+      // Handle the case where voices are loaded asynchronously
+      if (this.speechSynthesis.getVoices().length === 0) {
+        this.speechSynthesis.addEventListener('voiceschanged', () => {
+          console.log('Voices loaded:', this.speechSynthesis?.getVoices().length);
+        });
+      }
+    } else {
+      this.isSpeechSupported = false;
+      console.warn('Speech synthesis is not supported in this browser');
+    }
+  }
+
+  speakStory(): void {
+    if (!this.isSpeechSupported || !this.speechSynthesis) {
+      console.warn('Speech synthesis is not available');
+      return;
+    }
+
+    // Stop any current speech
+    if (this.isSpeaking) {
+      this.speechSynthesis.cancel();
+      this.isSpeaking = false;
+      return;
+    }
+
+    // Create speech text by combining title and story text
+    // Strip HTML tags from the content
+    const titleText = this.stripHtmlTags(this.currentStory.title);
+    const storyText = this.stripHtmlTags(this.currentStory.text);
+    const fullText = `${titleText}. ${storyText}`;
+
+    if (fullText.trim() === '') {
+      console.warn('No text to speak');
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(fullText);
+
+    // Get available voices and select a female voice
+    const voices = this.speechSynthesis.getVoices();
+    const femaleVoice = this.selectFemaleVoice(voices);
+
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
+    // Configure speech settings for a soft, child-friendly voice
+    utterance.rate = 0.8; // Slower pace for children
+    utterance.pitch = 1.2; // Slightly higher pitch for a gentler tone
+    utterance.volume = 0.9; // Slightly softer volume
+
+    // Handle speech events
+    utterance.onstart = () => {
+      this.isSpeaking = true;
+    };
+
+    utterance.onend = () => {
+      this.isSpeaking = false;
+    };
+
+    utterance.onerror = (event) => {
+      console.error('Speech synthesis error:', event);
+      this.isSpeaking = false;
+    };
+
+    // Start speaking
+    this.speechSynthesis.speak(utterance);
+  }
+
+  private selectFemaleVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+    // If no voices are loaded yet, wait and try again
+    if (voices.length === 0) {
+      // Voices might not be loaded immediately, trigger a reload
+      this.speechSynthesis?.getVoices();
+      return null;
+    }
+
+    // Priority order for selecting female voices
+    const femaleVoicePreferences = [
+      // English female voices (common names)
+      'Google UK English Female',
+      'Microsoft Zira - English (United States)',
+      'Microsoft Hazel - English (Great Britain)',
+      'Samantha',
+      'Victoria',
+      'Karen',
+      'Moira',
+      'Tessa',
+      'Veena',
+      'Fiona',
+      'Alex' // Sometimes Alex is female on some systems
+    ];
+
+    // First, try to find a voice by exact name match
+    for (const preferredName of femaleVoicePreferences) {
+      const voice = voices.find(v => v.name === preferredName);
+      if (voice) {
+        console.log('Selected female voice:', voice.name);
+        return voice;
+      }
+    }
+
+    // Second, try to find any voice that contains "female" in the name
+    const femaleVoice = voices.find(voice =>
+      voice.name.toLowerCase().includes('female') ||
+      voice.name.toLowerCase().includes('woman')
+    );
+
+    if (femaleVoice) {
+      console.log('Selected female voice:', femaleVoice.name);
+      return femaleVoice;
+    }
+
+    // Third, try to find voices that are commonly female
+    const commonFemaleNames = ['zira', 'hazel', 'samantha', 'victoria', 'karen', 'moira', 'tessa', 'veena', 'fiona'];
+    for (const femaleName of commonFemaleNames) {
+      const voice = voices.find(v => v.name.toLowerCase().includes(femaleName));
+      if (voice) {
+        console.log('Selected female voice:', voice.name);
+        return voice;
+      }
+    }
+
+    // If no specifically female voice is found, log available voices for debugging
+    console.log('Available voices:', voices.map(v => v.name));
+    console.log('No female voice found, using default voice');
+
+    // Return the first available voice as fallback
+    return voices.length > 0 ? voices[0] : null;
+  }
+
+  private stripHtmlTags(html: string): string {
+    if (!html) return '';
+    // Create a temporary div element to parse HTML and extract text content
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    return tempDiv.textContent || tempDiv.innerText || '';
   }
 }
