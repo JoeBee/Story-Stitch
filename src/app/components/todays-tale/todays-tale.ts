@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { InfoModal } from '../info-modal/info-modal';
 import { LocalStorageService } from '../../services/local-storage.service';
@@ -29,7 +29,8 @@ import { DisplayStory, StoryData } from '../../interfaces/story.interface';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDialogModule
   ],
   templateUrl: './todays-tale.html',
   styleUrls: ['./todays-tale.scss']
@@ -276,6 +277,16 @@ export class TodaysTale implements OnInit, OnDestroy {
     });
   }
 
+  openContributionInfoDialog(): void {
+    this.dialog.open(ContributionInfoDialog, {
+      width: '95vw',
+      maxWidth: '700px',
+      height: 'auto',
+      maxHeight: '90vh',
+      panelClass: 'contribution-info-dialog'
+    });
+  }
+
   shareOnFacebook(): void {
     const url = encodeURIComponent(window.location.href);
     const text = encodeURIComponent(`I just contributed to today's collaborative story in Story Stitch! Join the ${this.selectedGuild} guild and help weave our tale.`);
@@ -469,3 +480,132 @@ export class TodaysTale implements OnInit, OnDestroy {
     return tempDiv.textContent || tempDiv.innerText || '';
   }
 }
+
+@Component({
+  selector: 'app-contribution-info-dialog',
+  standalone: true,
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
+  template: `
+    <div class="contribution-info-dialog">
+      <div class="modal-header">
+        <h2 mat-dialog-title>
+          <mat-icon>info</mat-icon>
+          How to Contribute
+        </h2>
+        <button mat-icon-button mat-dialog-close class="close-button">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      
+      <div mat-dialog-content class="modal-content">
+        <ul>
+          <li>Read the 'intro' and title.</li>
+          <li>Enter your 'Chapter' contribution.</li>
+          <li>Click Submit</li>
+          <li>Stories are published at 8:30 every evening.</li>
+        </ul>
+        <p>Check back at that time to find out how the journey ends!</p>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .contribution-info-dialog {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-image: url('/assets/images/fantasyWorld2_sm.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    
+    .contribution-info-dialog::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.5);
+      z-index: 1;
+    }
+    
+    .modal-header, .modal-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      padding: 10px 20px;
+    }
+    
+    .modal-header h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      color: #2c3e50;
+      font-weight: bold;
+      font-size: 1.8rem;
+    }
+    
+    .modal-header mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+    }
+    
+    .close-button {
+      color: #333;
+      flex-shrink: 0;
+    }
+    
+    .close-button mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    .modal-content {
+      padding: 0 20px 20px 20px;
+      max-width: 100%;
+      overflow-x: hidden;
+      word-wrap: break-word;
+    }
+    
+    .modal-content ul {
+      margin: 0;
+      padding-left: 30px;
+      max-width: 100%;
+    }
+    
+    .modal-content li {
+      margin-bottom: 12px;
+      line-height: 1.6;
+      max-width: 100%;
+      word-wrap: break-word;
+      font-size: 1.2rem;
+      color: #2c3e50;
+      font-weight: 500;
+    }
+    
+    .modal-content p {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #2c3e50;
+      max-width: 100%;
+      word-wrap: break-word;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+  `]
+})
+export class ContributionInfoDialog { }

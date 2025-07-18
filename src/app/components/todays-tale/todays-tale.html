@@ -94,7 +94,13 @@
                 </div>
 
 
-                <h4 *ngIf="!isLoading">Your Story Contribution:</h4>
+                <div class="contribution-header" *ngIf="!isLoading">
+                    <h4>Your Story Contribution:</h4>
+                    <button mat-icon-button class="contribution-info-button" (click)="openContributionInfoDialog()"
+                        matTooltip="How to contribute to stories">
+                        <mat-icon>help_outline</mat-icon>
+                    </button>
+                </div>
                 <div class="story-input-section" *ngIf="!isLoading">
                     <mat-form-field appearance="fill" class="w-100">
                         <mat-label>Add your chapter to today's story (50 words max)</mat-label>
