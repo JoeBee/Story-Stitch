@@ -63,7 +63,15 @@ export class TodaysTale implements OnInit, OnDestroy {
     private penNameGeneratorService: PenNameGeneratorService,
     private firestoreService: FirestoreService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {
+
+    // TESTING
+    console.log('🚀 1.', this.localStorageService.getTodaysSubmission());
+    console.log('🚀 2.', this.localStorageService.getGuild());
+    console.log('🚀 3.', this.localStorageService.getPenName());
+    console.log('🚀 4.', this.localStorageService.getIsSubmitted());
+
+  }
 
   ngOnInit(): void {
     // Load saved values from localStorage
@@ -105,7 +113,15 @@ export class TodaysTale implements OnInit, OnDestroy {
     }
 
     this.userStoryInput = this.localStorageService.getTodaysSubmission();
+    this.isSubmitted = this.localStorageService.getIsSubmitted();
     this.onTextChange(); // Update word count
+
+    console.log('📚 Loaded stored values:', {
+      guild: this.selectedGuild,
+      penName: this.penName,
+      submissionLength: this.userStoryInput.length,
+      isSubmitted: this.isSubmitted
+    });
   }
 
   private loadTodaysStory(): void {
@@ -213,15 +229,37 @@ export class TodaysTale implements OnInit, OnDestroy {
 
   submitStory(): void {
     if (this.canSubmit() && this.isOnline) {
-      // In a real app, this would send to an API
       console.log('Submitting story:', {
         guild: this.selectedGuild,
+        penName: this.penName,
         text: this.userStoryInput,
         wordCount: this.wordCount
       });
 
-      this.isSubmitted = true;
-      // Show success message or update UI
+      // Save contribution to Firestore
+      this.firestoreService.saveContribution(
+        this.penName,
+        this.userStoryInput,
+        this.selectedGuild
+      ).subscribe({
+        next: () => {
+          console.log('✅ Story contribution saved to Firestore successfully');
+          this.isSubmitted = true;
+          // Save isSubmitted state to local storage
+          this.localStorageService.setIsSubmitted(true);
+          console.log('✅ Story submitted and isSubmitted saved to local storage');
+          // Show success message or update UI
+        },
+        error: (error) => {
+          console.error('💥 Error saving contribution to Firestore:', error);
+          // Still mark as submitted locally even if Firestore fails
+          // so user doesn't try to submit again
+          this.isSubmitted = true;
+          this.localStorageService.setIsSubmitted(true);
+          // You could show an error message to the user here
+          console.log('⚠️ Story marked as submitted locally despite Firestore error');
+        }
+      });
     }
   }
 
