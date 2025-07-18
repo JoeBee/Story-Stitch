@@ -309,6 +309,22 @@ export class TodaysTale implements OnInit, OnDestroy {
     });
   }
 
+  // Testing method to clear all local storage variables
+  clearLocalVariables(): void {
+    console.log('🧪 Testing: Clearing all local storage variables...');
+    this.localStorageService.clearAll();
+
+    // Reset component state
+    this.isSubmitted = false;
+    this.userStoryInput = '';
+    this.wordCount = 0;
+
+    // Reload stored values (will get defaults)
+    this.loadStoredValues();
+
+    console.log('✅ Local storage cleared and component state reset');
+  }
+
   private initializeSpeechSynthesis(): void {
     if ('speechSynthesis' in window) {
       this.speechSynthesis = window.speechSynthesis;

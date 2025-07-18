@@ -4,6 +4,11 @@
         <div class="banner-content">
             <h2 class="banner-title">Story Stitch, Weaving Worlds and Connecting Minds</h2>
             <div class="banner-actions">
+                <!-- ************* TESTING TODO TESTING TODO TESTING TODO  ************* -->
+                <button *ngIf="true" mat-icon-button color="warn" class="test-button" (click)="clearLocalVariables()"
+                    matTooltip="Clear Local Storage (Testing)">
+                    <mat-icon>delete_sweep</mat-icon>
+                </button>
                 <button mat-icon-button class="nav-button" (click)="goToGreatBook()" matTooltip="View Story Archive">
                     <mat-icon>auto_stories</mat-icon>
                 </button>
@@ -92,7 +97,7 @@
                 <h4 *ngIf="!isLoading">Your Story Contribution:</h4>
                 <div class="story-input-section" *ngIf="!isLoading">
                     <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Add your paragraph to today's story (50 words max)</mat-label>
+                        <mat-label>Add your chapter to today's story (50 words max)</mat-label>
                         <textarea matInput rows="6" [(ngModel)]="userStoryInput" [readonly]="isSubmitted"
                             (input)="onTextChange()" class="story-input" placeholder="Continue the story...">
             </textarea>
