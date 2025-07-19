@@ -28,13 +28,14 @@ export class GoogleAiService {
 The intro paragraph should have approximately 50 words:
 - Introduce young characters with personality.
 - This is a Children's dreamy fantasy story.
+- The chidrens names should be unique, dreamy and not too common.
 
-Add a fitting title for that goes with the intro paragraph.
+The title should be a fitting title for this that goes with the intro paragraph.
 
 Data should be returned as JSON:
 {
- "Title": <string>,
- "IntroParagraph": <string>
+ "title": <string>,
+ "introParagraph": <string>
 }`;
 
         const requestBody = {
@@ -46,7 +47,7 @@ Data should be returned as JSON:
             generationConfig: {
                 temperature: 0.7,
                 topK: 40,
-                topP: 0.95,
+                topP: 0.65,
                 maxOutputTokens: 1024,
             }
         };
@@ -71,8 +72,8 @@ Data should be returned as JSON:
                         const parsedResponse = JSON.parse(cleanedText);
 
                         return {
-                            title: parsedResponse.Title || parsedResponse.title || 'Generated Story',
-                            introParagraph: parsedResponse.IntroParagraph || parsedResponse.introParagraph || 'A magical adventure awaits...'
+                            title: parsedResponse.title || 'Generated Story',
+                            introParagraph: parsedResponse.introParagraph || 'A magical adventure awaits...'
                         };
                     } catch (parseError) {
                         console.error('❌ Error parsing AI response:', parseError);
@@ -103,12 +104,12 @@ Data should be returned as JSON:
      */
     private extractStoryFromText(text: string): AIStoryResponse {
         // Try to find title patterns
-        const titleMatch = text.match(/(?:title|Title):\s*"?([^"\n]+)"?/i) ||
+        const titleMatch = text.match(/(?:title):\s*"?([^"\n]+)"?/i) ||
             text.match(/"title":\s*"([^"]+)"/i) ||
             text.match(/^([^.\n]+)/); // First line as title
 
         // Try to find intro paragraph patterns
-        const introMatch = text.match(/(?:intro|IntroParagraph):\s*"?([^"]+)"?/i) ||
+        const introMatch = text.match(/(?:introParagraph):\s*"?([^"]+)"?/i) ||
             text.match(/"introParagraph":\s*"([^"]+)"/i) ||
             text.match(/\n\s*(.+)/); // Second line as intro
 

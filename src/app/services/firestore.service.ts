@@ -38,9 +38,9 @@ export class FirestoreService {
                     // Only return title, intro, and images as per requirements
                     // Handle both capitalized and lowercase field names from Firestore
                     const storyData = {
-                        title: data.Title || data.title || '',
-                        intro: data.Intro || data.intro || '',
-                        images: data.Images || data.images || []
+                        title: data.title || '',
+                        intro: data.intro || '',
+                        images: data.images || []
                     };
                     return [storyData];
                 } else {
@@ -125,21 +125,22 @@ export class FirestoreService {
                 console.log('✨ Generated story:', aiResponse);
 
                 const newStory: StoryData = {
-                    Title: aiResponse.title,
-                    Intro: aiResponse.introParagraph,
-                    Images: [],
-                    Guild: guild,
-                    Contributions: []
+                    title: aiResponse.title,
+                    intro: aiResponse.introParagraph,
+                    images: [],
+                    guild: guild,
+                    contributions: [],
+                    publishedStory: ''
                 };
 
-                const docid = documentId + '-' + guild;
-                return this.saveStory(docid, newStory).pipe(
+                // const docid = documentId + '-' + guild;
+                return this.saveStory(documentId, newStory).pipe(
                     map(() => {
                         console.log('💾 Story saved successfully!');
                         return {
-                            title: newStory.Title || '',
-                            intro: newStory.Intro || '',
-                            images: newStory.Images || []
+                            title: newStory.title || '',
+                            intro: newStory.intro || '',
+                            images: newStory.images || []
                         };
                     })
                 );

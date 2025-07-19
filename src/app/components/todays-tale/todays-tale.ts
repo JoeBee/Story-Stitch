@@ -185,17 +185,17 @@ export class TodaysTale implements OnInit, OnDestroy {
   }
 
   private startFadeOut(): void {
-    console.log('🎭 Starting fade-out animation...');
+    console.log('🎆 Starting fireworks explosion animation...');
     this.isFadingOut = true;
-    this.cdr.detectChanges(); // Trigger change detection for fade-out
+    this.cdr.detectChanges(); // Trigger change detection for fireworks
 
-    // Wait for fade animation to complete before hiding loading spinner
+    // Wait for fireworks animation to complete before hiding loading spinner
     setTimeout(() => {
-      console.log('✨ Fade-out complete, hiding spinner');
+      console.log('🎇 Fireworks explosion complete, hiding spinner');
       this.isLoading = false;
       this.isFadingOut = false;
       this.cdr.detectChanges(); // Trigger change detection for final state
-    }, 800); // 800ms to match CSS animation duration
+    }, 1200); // 1200ms to match CSS animation duration
   }
 
   onTextChange(): void {

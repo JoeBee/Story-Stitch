@@ -195,16 +195,35 @@
     background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
     border-radius: 20px;
     margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    border: 4px solid #ffffff;
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    border: 2px solid #311767;
+    transition: opacity 02.8s ease-out, transform 02.8s ease-out;
     opacity: 1;
     transform: scale(1);
 }
 
-.loading-container.fade-out {
-    opacity: 0;
-    transform: scale(0.95);
+.loading-container.explode {
+    animation: fireworksExplosion 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.loading-container.explode .fairy-spinner {
+    animation: fairyExplode 1.2s ease-out forwards;
+}
+
+.loading-container.explode .sparkle {
+    animation: sparkleExplode 1.2s ease-out forwards;
+}
+
+.loading-container.explode .fairy {
+    animation: fairyBurst 1.2s ease-out forwards;
+}
+
+.loading-container.explode .wand {
+    animation: wandExplode 1.2s ease-out forwards;
+}
+
+.loading-container.explode .loading-text {
+    animation: textExplode 1.2s ease-out forwards;
 }
 
 .fairy-spinner {
@@ -256,30 +275,35 @@
     top: 10%;
     left: 15%;
     animation-delay: 0s;
+    --random-x: -100px;
 }
 
 .sparkle:nth-child(2) {
     top: 20%;
     right: 10%;
     animation-delay: 0.5s;
+    --random-x: 120px;
 }
 
 .sparkle:nth-child(3) {
     bottom: 25%;
     left: 10%;
     animation-delay: 1s;
+    --random-x: -80px;
 }
 
 .sparkle:nth-child(4) {
     bottom: 15%;
     right: 20%;
     animation-delay: 1.5s;
+    --random-x: 150px;
 }
 
 .sparkle:nth-child(5) {
     top: 50%;
     left: 5%;
     animation-delay: 2s;
+    --random-x: -130px;
 }
 
 .loading-text {
@@ -356,6 +380,136 @@
 
     100% {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.6);
+    }
+}
+
+// Fireworks Explosion Animations
+@keyframes fireworksExplosion {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+    }
+
+    30% {
+        transform: scale(1.2);
+        opacity: 1;
+        background: linear-gradient(135deg, #ff3030, #30e6d6, #30a7ff, #7dd87d, #ffb830);
+    }
+
+    60% {
+        transform: scale(1.5);
+        opacity: 0.8;
+        background: linear-gradient(135deg, #ff0000, #00ffff, #0066ff, #66ff66, #ffaa00);
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+        background: linear-gradient(135deg, #fff, #fff, #fff, #fff, #fff);
+    }
+}
+
+@keyframes fairyExplode {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.8) rotate(180deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(3) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkleExplode {
+    0% {
+        transform: translateY(0px) scale(1);
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-200px) translateX(var(--random-x, 0px)) scale(3) rotate(720deg);
+    }
+}
+
+@keyframes fairyBurst {
+    0% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+        filter: brightness(1) saturate(1);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) scale(1.5) rotate(180deg);
+        opacity: 1;
+        filter: brightness(1.5) saturate(1.5);
+    }
+
+    70% {
+        transform: translate(-50%, -50%) scale(2) rotate(360deg);
+        opacity: 0.7;
+        filter: brightness(2) saturate(2);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(4) rotate(720deg);
+        opacity: 0;
+        filter: brightness(3) saturate(3);
+    }
+}
+
+@keyframes wandExplode {
+    0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+
+    40% {
+        transform: rotate(360deg) scale(1.8);
+        opacity: 1;
+    }
+
+    100% {
+        transform: rotate(720deg) scale(3) translateY(-150px);
+        opacity: 0;
+    }
+}
+
+@keyframes textExplode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    30% {
+        transform: scale(1.2);
+        opacity: 1;
+        filter: brightness(1.5);
+    }
+
+    60% {
+        transform: scale(1.5);
+        opacity: 0.8;
+        filter: brightness(2);
+    }
+
+    100% {
+        transform: scale(2.5) translateY(-100px);
+        opacity: 0;
+        filter: brightness(3);
     }
 }
 

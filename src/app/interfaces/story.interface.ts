@@ -1,16 +1,17 @@
 export interface StoryData {
     title?: string;
-    Title?: string;
+    // Title?: string;
     intro?: string;
-    Intro?: string;
+    // Intro?: string;
     images?: string[];
-    Images?: string[];
+    // Images?: string[];
     conclusion?: string;
-    Conclusion?: string;
+    // Conclusion?: string;
     guild?: string;
-    Guild?: string;
+    // Guild?: string;
     contributions?: StoryContribution[];
-    Contributions?: StoryContribution[];
+    // Contributions?: StoryContribution[];
+    publishedStory?: string;
 }
 
 export interface StoryContribution {
@@ -24,4 +25,5 @@ export interface DisplayStory {
     title: string;
     text: string;
     images?: string[];
+    publishedStory?: string;
 } 
