@@ -101,7 +101,7 @@
     h4 {
         margin: 0;
         font-family: var(--story-font) !important;
-        color: #2c3e50;
+        color: black;
     }
 
     .contribution-info-button {
@@ -123,7 +123,7 @@
 }
 
 .story-input-section {
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .guild-dropdown {
@@ -515,9 +515,10 @@
 
 .story-input {
     width: 100%;
-    min-height: 120px;
+    height: 100px;
+    min-height: 100px;
     font-family: var(--story-font) !important;
-    padding: 15px;
+    padding: 0px;
     border: 2px solid #ddd;
     border-radius: 8px;
     resize: vertical;
@@ -551,7 +552,7 @@
 
 .submit-section {
     text-align: center;
-    margin-top: 25px;
+    margin-top: 0px;
 }
 
 .submit-btn {

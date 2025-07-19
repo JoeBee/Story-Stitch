@@ -106,20 +106,20 @@
                         <mat-label>Add your chapter to today's story (50 words max)</mat-label>
                         <textarea matInput rows="6" [(ngModel)]="userStoryInput" [readonly]="isSubmitted"
                             (input)="onTextChange()" class="story-input" placeholder="Continue the story...">
-            </textarea>
+                        </textarea>
+                        <div class="word-counter" [class.warning]="wordCount > 50">
+                            {{wordCount}}/50 words
+                        </div>
                     </mat-form-field>
 
-                    <div class="word-counter" [class.warning]="wordCount > 50">
-                        {{wordCount}}/50 words
-                    </div>
                 </div>
 
                 <!-- Submit Section -->
                 <div class="submit-section" *ngIf="!isLoading">
                     <button mat-raised-button color="primary" [disabled]="!canSubmit() || !isOnline"
                         (click)="submitStory()" class="submit-btn">
-                        <mat-icon>send</mat-icon>
-                        Submit Chapter
+                        <mat-icon>{{ isSubmitting ? 'hourglass_empty' : 'send' }}</mat-icon>
+                        {{ isSubmitting ? 'Submitting...' : 'Submit Chapter' }}
                     </button>
                 </div>
 

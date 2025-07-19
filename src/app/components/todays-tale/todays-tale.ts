@@ -41,6 +41,7 @@ export class TodaysTale implements OnInit, OnDestroy {
   userStoryInput = '';
   wordCount = 0;
   isSubmitted = false;
+  isSubmitting = false;
   isOnline = navigator.onLine;
   clearPenName = false;
   isSpeechSupported = false;
@@ -225,11 +226,15 @@ export class TodaysTale implements OnInit, OnDestroy {
     return this.userStoryInput.trim().length > 0 &&
       this.wordCount <= 50 &&
       !this.isSubmitted &&
+      !this.isSubmitting &&
       this.selectedGuild !== '';
   }
 
   submitStory(): void {
     if (this.canSubmit() && this.isOnline) {
+      // Set submitting state immediately to disable button
+      this.isSubmitting = true;
+
       console.log('Submitting story:', {
         guild: this.selectedGuild,
         penName: this.penName,
@@ -246,6 +251,7 @@ export class TodaysTale implements OnInit, OnDestroy {
         next: () => {
           console.log('✅ Story contribution saved to Firestore successfully');
           this.isSubmitted = true;
+          this.isSubmitting = false;
           // Save isSubmitted state to local storage
           this.localStorageService.setIsSubmitted(true);
           console.log('✅ Story submitted and isSubmitted saved to local storage');
@@ -256,6 +262,7 @@ export class TodaysTale implements OnInit, OnDestroy {
           // Still mark as submitted locally even if Firestore fails
           // so user doesn't try to submit again
           this.isSubmitted = true;
+          this.isSubmitting = false;
           this.localStorageService.setIsSubmitted(true);
           // You could show an error message to the user here
           console.log('⚠️ Story marked as submitted locally despite Firestore error');
@@ -327,6 +334,7 @@ export class TodaysTale implements OnInit, OnDestroy {
 
     // Reset component state
     this.isSubmitted = false;
+    this.isSubmitting = false;
     this.userStoryInput = '';
     this.wordCount = 0;
 
